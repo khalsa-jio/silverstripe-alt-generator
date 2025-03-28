@@ -1,10 +1,16 @@
 {
     "name": "silverstripe/alt-generator",
     "description": "A SilverStripe module that generates a new module with a skeleton structure.",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
         "CMS"
+    ],
+    "authors": [
+        {
+            "name": "Sukhwinder Singh",
+            "email": "rv.singh462@gmail.com"
+        }
     ],
     "license": "BSD-3-Clause",
     "require": {
