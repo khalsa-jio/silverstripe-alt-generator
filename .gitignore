@@ -5,3 +5,5 @@ composer.lock
 *.js.map
 *.css.map
 yarn-error.log
+.history/
+public/_resources/
