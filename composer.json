@@ -1,7 +1,7 @@
 {
-    "name": "silverstripe-module/skeleton",
-    "description": "A skeleton for Silverstripe CMS modules.",
-    "type": "silverstripe-vendormodule",
+    "name": "silverstripe/alt-generator",
+    "description": "A SilverStripe module that generates a new module with a skeleton structure.",
+    "type": "silverstripe-module",
     "keywords": [
         "silverstripe",
         "CMS"
@@ -29,5 +29,12 @@
         ]
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "phpstan/extension-installer": true,
+            "silverstripe/vendor-plugin": true
+        }
+    }
 }
