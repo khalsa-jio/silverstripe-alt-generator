@@ -1,5 +1,5 @@
 {
-    "name": "silverstripe/alt-generator",
+    "name": "khalsa-jio/alt-generator",
     "description": "A SilverStripe module that generates a new module with a skeleton structure.",
     "type": "silverstripe-vendormodule",
     "keywords": [
