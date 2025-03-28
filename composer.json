@@ -1,0 +1,33 @@
+{
+    "name": "silverstripe-module/skeleton",
+    "description": "A skeleton for Silverstripe CMS modules.",
+    "type": "silverstripe-vendormodule",
+    "keywords": [
+        "silverstripe",
+        "CMS"
+    ],
+    "license": "BSD-3-Clause",
+    "require": {
+        "silverstripe/framework": "^5.0",
+        "silverstripe/admin": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "squizlabs/php_codesniffer": "^3.7",
+        "silverstripe/standards": "^1",
+        "phpstan/extension-installer": "^1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "SilverStripeModule\\Skeleton\\": "src/",
+            "SilverStripeModule\\Skeleton\\Tests\\": "tests/php/"
+        }
+    },
+    "extra": {
+        "expose": [
+            "client/dist"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
