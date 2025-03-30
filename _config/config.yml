@@ -1,1 +1,20 @@
-# see https://docs.silverstripe.org/en/developer_guides/configuration/configuration/
+---
+Name: khalsa-jio-alt-generator-config
+---
+
+Silverstripe\Assets\Image:
+  extensions:
+    - KhalsaJio\AltGenerator\Extensions\ImageAltGeneratorExtension
+
+SilverStripe\AssetAdmin\Forms\ImageFormFactory:
+  extensions:
+    - KhalsaJio\AltGenerator\Extensions\ImageAltGeneratorFormFactoryExtension
+
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_javascript:
+    - 'khalsa-jio/alt-generator: client/dist/js/bundle.js'
+Injector:
+  ImageTextGeneratorField:
+    class: App\Forms\ImageTextGeneratorField
+    constructor:
+      schemaComponent: 'ImageTextGeneratorField'

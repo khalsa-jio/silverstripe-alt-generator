@@ -1,1 +1,314 @@
-!function(){"use strict";var e={274:function(e,t,n){var o,u=(o=n(521))&&o.__esModule?o:{default:o};window.document.addEventListener("DOMContentLoaded",(()=>{(0,u.default)()}))},521:function(e,t,n){Object.defineProperty(t,"__esModule",{value:!0}),t.default=void 0;var o=a(n(648)),u=a(n(64));function a(e){return e&&e.__esModule?e:{default:e}}t.default=()=>{o.default.component.registerMany({ExampleComponent:u.default})}},64:function(e,t,n){Object.defineProperty(t,"__esModule",{value:!0}),t.default=void 0;var o,u=(o=n(363))&&o.__esModule?o:{default:o};var a=()=>u.default.createElement("div",{className:"example-component"},"This is an example");t.default=a},708:function(e,t,n){var o=n(311);o(document).ready((()=>{}))},648:function(e){e.exports=Injector},363:function(e){e.exports=React},311:function(e){e.exports=jQuery}},t={};function n(o){var u=t[o];if(void 0!==u)return u.exports;var a=t[o]={exports:{}};return e[o](a,a.exports,n),a.exports}n(708),n(274)}();
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./client/src/boot/index.js":
+/*!**********************************!*\
+  !*** ./client/src/boot/index.js ***!
+  \**********************************/
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+
+
+var _registerComponents = _interopRequireDefault(__webpack_require__(/*! boot/registerComponents */ "./client/src/boot/registerComponents.js"));
+var _registerTransforms = _interopRequireDefault(__webpack_require__(/*! boot/registerTransforms */ "./client/src/boot/registerTransforms.js"));
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+window.document.addEventListener('DOMContentLoaded', () => {
+  (0, _registerComponents.default)();
+});
+
+/***/ }),
+
+/***/ "./client/src/boot/registerComponents.js":
+/*!***********************************************!*\
+  !*** ./client/src/boot/registerComponents.js ***!
+  \***********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _Injector = _interopRequireDefault(__webpack_require__(/*! lib/Injector */ "lib/Injector"));
+var _ImageTextGeneratorField = _interopRequireDefault(__webpack_require__(/*! ../components/ImageTextGeneratorField/ImageTextGeneratorField */ "./client/src/components/ImageTextGeneratorField/ImageTextGeneratorField.js"));
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+var _default = () => {
+  _Injector.default.component.registerMany({
+    ImageTextGeneratorField: _ImageTextGeneratorField.default
+  });
+};
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./client/src/boot/registerTransforms.js":
+/*!***********************************************!*\
+  !*** ./client/src/boot/registerTransforms.js ***!
+  \***********************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _default = () => {};
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./client/src/components/ImageTextGeneratorField/ImageTextGeneratorField.js":
+/*!**********************************************************************************!*\
+  !*** ./client/src/components/ImageTextGeneratorField/ImageTextGeneratorField.js ***!
+  \**********************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "prop-types"));
+var _reactstrap = __webpack_require__(/*! reactstrap */ "reactstrap");
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+const InputField = props => {
+  const {
+    id,
+    value,
+    extraClass,
+    className,
+    disabled,
+    readOnly,
+    placeholder,
+    autoFocus,
+    type,
+    attributes,
+    onChange,
+    onBlur,
+    onFocus,
+    imageID,
+    ...otherProps
+  } = props;
+  const [loading, setLoading] = (0, _react.useState)(false);
+  const [displayText, setDisplayText] = (0, _react.useState)('');
+  const [targetText, setTargetText] = (0, _react.useState)('');
+  (0, _react.useEffect)(() => {
+    setDisplayText(value || '');
+    if (!value) setTargetText('');
+  }, [value]);
+  (0, _react.useEffect)(() => {
+    if (!targetText) return;
+    let index = 0;
+    const speed = 30;
+    const type = () => {
+      if (index < targetText.length) {
+        setDisplayText(targetText.substring(0, index + 1));
+        index++;
+        setTimeout(type, speed);
+      } else {
+        handleChange({
+          target: {
+            value: targetText
+          }
+        });
+      }
+    };
+    type();
+  }, [targetText]);
+  const getInputProps = () => {
+    const inputProps = {
+      className: `${className} ${extraClass}`,
+      id,
+      disabled,
+      readOnly,
+      value: displayText || value || '',
+      placeholder,
+      autoFocus,
+      type: type || 'text',
+      onBlur,
+      onFocus,
+      ...(attributes || {})
+    };
+    if (!readOnly) {
+      inputProps.onChange = handleChange;
+    }
+    return inputProps;
+  };
+  const handleChange = event => {
+    if (onChange && event.target) {
+      setDisplayText(event.target.value);
+      onChange(event, {
+        id,
+        value: event.target.value
+      });
+    }
+  };
+  const handleGenerate = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`admin/alt-generator/generate/${imageID}`, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      if (data.altText) {
+        setTargetText(data.altText);
+      }
+    } catch (error) {
+      console.error('Generation failed:', error);
+    }
+    setLoading(false);
+  };
+  return _react.default.createElement(_reactstrap.InputGroup, null, _react.default.createElement(_reactstrap.Input, getInputProps()), _react.default.createElement(_reactstrap.InputGroupAddon, {
+    addonType: "append"
+  }, _react.default.createElement("button", {
+    type: "button",
+    className: "btn btn-primary generate-button",
+    onClick: handleGenerate,
+    disabled: loading || disabled
+  }, loading ? _react.default.createElement("span", {
+    className: "loading-dots"
+  }, "Generating") : '✨ Generate Alt Text')));
+};
+InputField.propTypes = {
+  extraClass: _propTypes.default.string,
+  id: _propTypes.default.string,
+  className: _propTypes.default.string,
+  disabled: _propTypes.default.bool,
+  readOnly: _propTypes.default.bool,
+  placeholder: _propTypes.default.string,
+  autoFocus: _propTypes.default.bool,
+  type: _propTypes.default.string,
+  attributes: _propTypes.default.object,
+  onChange: _propTypes.default.func,
+  onBlur: _propTypes.default.func,
+  onFocus: _propTypes.default.func,
+  imageID: _propTypes.default.number
+};
+InputField.defaultProps = {
+  extraClass: '',
+  className: '',
+  value: '',
+  type: 'text',
+  attributes: {}
+};
+var _default = exports["default"] = InputField;
+
+/***/ }),
+
+/***/ "./client/src/entwine/example-file.js":
+/*!********************************************!*\
+  !*** ./client/src/entwine/example-file.js ***!
+  \********************************************/
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "jquery");
+
+
+(function ($) {
+  $(document).ready(() => {});
+})(jQuery);
+
+/***/ }),
+
+/***/ "jquery":
+/*!*************************!*\
+  !*** external "jQuery" ***!
+  \*************************/
+/***/ (function(module) {
+
+module.exports = jQuery;
+
+/***/ }),
+
+/***/ "lib/Injector":
+/*!***************************!*\
+  !*** external "Injector" ***!
+  \***************************/
+/***/ (function(module) {
+
+module.exports = Injector;
+
+/***/ }),
+
+/***/ "prop-types":
+/*!****************************!*\
+  !*** external "PropTypes" ***!
+  \****************************/
+/***/ (function(module) {
+
+module.exports = PropTypes;
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/***/ (function(module) {
+
+module.exports = React;
+
+/***/ }),
+
+/***/ "reactstrap":
+/*!*****************************!*\
+  !*** external "Reactstrap" ***!
+  \*****************************/
+/***/ (function(module) {
+
+module.exports = Reactstrap;
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+!function() {
+/*!**************************************!*\
+  !*** ./client/src/bundles/bundle.js ***!
+  \**************************************/
+
+
+__webpack_require__(/*! entwine/example-file */ "./client/src/entwine/example-file.js");
+__webpack_require__(/*! boot */ "./client/src/boot/index.js");
+}();
+/******/ })()
+;
+//# sourceMappingURL=bundle.js.map
