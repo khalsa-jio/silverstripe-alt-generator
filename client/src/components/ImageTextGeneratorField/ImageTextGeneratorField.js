@@ -115,7 +115,7 @@ const ImageTextGeneratorField = (props) => {
     setLoading(false);
   };
 
-  const buttonClasses = ['tip tip--title', props.extraClass]
+  const buttonClasses = ['image-alt--input-group', 'btn--last', 'btn-outline-secondary', props.extraClass]
   const fieldGroupProps = {
     ...props,
     className: classNames('image-text-generator-field', extraClass),
