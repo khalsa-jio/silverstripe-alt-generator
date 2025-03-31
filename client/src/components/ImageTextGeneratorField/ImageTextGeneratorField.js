@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { inject } from 'lib/Injector';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Input, InputGroup, InputGroupAddon } from 'reactstrap';
 
-const InputField = (props) => {
+const ImageTextGeneratorField = (props) => {
   const {
     id,
     value,
+    name,
     extraClass,
     className,
     disabled,
@@ -13,15 +16,20 @@ const InputField = (props) => {
     placeholder,
     autoFocus,
     type,
+    maxLength,
     attributes,
     onChange,
     onBlur,
     onFocus,
-    // New props for alt-text generation
+
+    // props for alt-text generation
     imageID,
+
+    // injected props
+    FieldGroup,
+    Button,
   } = props;
 
-  // State for loading and typing animation
   const [loading, setLoading] = useState(false);
   const [displayText, setDisplayText] = useState('');
   const [targetText, setTargetText] = useState('');
@@ -32,13 +40,13 @@ const InputField = (props) => {
     if (!value) setTargetText('');
   }, [value]);
 
-  // Typing animation effect
+  // For typing effect
   useEffect(() => {
     if (!targetText) return;
-    
+
     let index = 0;
     const speed = 30;
-    
+
     const type = () => {
       if (index < targetText.length) {
         setDisplayText(targetText.substring(0, index + 1));
@@ -57,6 +65,9 @@ const InputField = (props) => {
       className: `${className} ${extraClass}`,
       id,
       disabled,
+      name,
+      maxLength,
+      'aria-label': name,
       readOnly,
       value: displayText || value || '',
       placeholder,
@@ -104,28 +115,34 @@ const InputField = (props) => {
     setLoading(false);
   };
 
+  const buttonClasses = ['tip tip--title', props.extraClass]
+  const fieldGroupProps = {
+    ...props,
+    className: classNames('image-text-generator-field', extraClass),
+  };
+
   return (
-    <InputGroup>
-      <Input {...getInputProps()} />
-      <InputGroupAddon addonType="append">
-        <button
-          type="button"
-          className="btn btn-primary generate-button"
-          onClick={handleGenerate}
-          disabled={loading || disabled}
-        >
-          {loading ? (
-            <span className="loading-dots">Generating</span>
-          ) : (
-            '✨ Generate Alt Text'
-          )}
-        </button>
-      </InputGroupAddon>
-    </InputGroup>
+    <FieldGroup {...fieldGroupProps}>
+      <InputGroup>
+        <Input {...getInputProps()} />
+        <InputGroupAddon addonType="append">
+          <Button
+            onClick={handleGenerate}
+            disabled={loading || disabled}
+            loading={loading}
+            noText={true}
+            className={classNames(buttonClasses)}
+          >
+            Generate
+          </Button>
+
+        </InputGroupAddon>
+      </InputGroup>
+    </FieldGroup>
   );
 };
 
-InputField.propTypes = {
+ImageTextGeneratorField.propTypes = {
   extraClass: PropTypes.string,
   id: PropTypes.string,
   className: PropTypes.string,
@@ -141,7 +158,7 @@ InputField.propTypes = {
   imageID: PropTypes.number,
 };
 
-InputField.defaultProps = {
+ImageTextGeneratorField.defaultProps = {
   extraClass: '',
   className: '',
   value: '',
@@ -149,4 +166,6 @@ InputField.defaultProps = {
   attributes: {},
 };
 
-export default InputField;
+export default inject(
+  ['FieldGroup', 'Button']
+)(ImageTextGeneratorField);

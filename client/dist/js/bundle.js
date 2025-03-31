@@ -11,7 +11,6 @@
 
 
 var _registerComponents = _interopRequireDefault(__webpack_require__(/*! boot/registerComponents */ "./client/src/boot/registerComponents.js"));
-var _registerTransforms = _interopRequireDefault(__webpack_require__(/*! boot/registerTransforms */ "./client/src/boot/registerTransforms.js"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 window.document.addEventListener('DOMContentLoaded', () => {
   (0, _registerComponents.default)();
@@ -43,23 +42,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "./client/src/boot/registerTransforms.js":
-/*!***********************************************!*\
-  !*** ./client/src/boot/registerTransforms.js ***!
-  \***********************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-var _default = () => {};
-exports["default"] = _default;
-
-/***/ }),
-
 /***/ "./client/src/components/ImageTextGeneratorField/ImageTextGeneratorField.js":
 /*!**********************************************************************************!*\
   !*** ./client/src/components/ImageTextGeneratorField/ImageTextGeneratorField.js ***!
@@ -73,15 +55,18 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+var _Injector = __webpack_require__(/*! lib/Injector */ "lib/Injector");
 var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "prop-types"));
+var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "classnames"));
 var _reactstrap = __webpack_require__(/*! reactstrap */ "reactstrap");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
-const InputField = props => {
+const ImageTextGeneratorField = props => {
   const {
     id,
     value,
+    name,
     extraClass,
     className,
     disabled,
@@ -89,12 +74,14 @@ const InputField = props => {
     placeholder,
     autoFocus,
     type,
+    maxLength,
     attributes,
     onChange,
     onBlur,
     onFocus,
     imageID,
-    ...otherProps
+    FieldGroup,
+    Button
   } = props;
   const [loading, setLoading] = (0, _react.useState)(false);
   const [displayText, setDisplayText] = (0, _react.useState)('');
@@ -127,6 +114,9 @@ const InputField = props => {
       className: `${className} ${extraClass}`,
       id,
       disabled,
+      name,
+      maxLength,
+      'aria-label': name,
       readOnly,
       value: displayText || value || '',
       placeholder,
@@ -169,18 +159,22 @@ const InputField = props => {
     }
     setLoading(false);
   };
-  return _react.default.createElement(_reactstrap.InputGroup, null, _react.default.createElement(_reactstrap.Input, getInputProps()), _react.default.createElement(_reactstrap.InputGroupAddon, {
+  const buttonClasses = ['tip tip--title', props.extraClass];
+  const fieldGroupProps = {
+    ...props,
+    className: (0, _classnames.default)('image-text-generator-field', extraClass)
+  };
+  return _react.default.createElement(FieldGroup, fieldGroupProps, _react.default.createElement(_reactstrap.InputGroup, null, _react.default.createElement(_reactstrap.Input, getInputProps()), _react.default.createElement(_reactstrap.InputGroupAddon, {
     addonType: "append"
-  }, _react.default.createElement("button", {
-    type: "button",
-    className: "btn btn-primary generate-button",
+  }, _react.default.createElement(Button, {
     onClick: handleGenerate,
-    disabled: loading || disabled
-  }, loading ? _react.default.createElement("span", {
-    className: "loading-dots"
-  }, "Generating") : '✨ Generate Alt Text')));
+    disabled: loading || disabled,
+    loading: loading,
+    noText: true,
+    className: (0, _classnames.default)(buttonClasses)
+  }, "Generate"))));
 };
-InputField.propTypes = {
+ImageTextGeneratorField.propTypes = {
   extraClass: _propTypes.default.string,
   id: _propTypes.default.string,
   className: _propTypes.default.string,
@@ -195,14 +189,14 @@ InputField.propTypes = {
   onFocus: _propTypes.default.func,
   imageID: _propTypes.default.number
 };
-InputField.defaultProps = {
+ImageTextGeneratorField.defaultProps = {
   extraClass: '',
   className: '',
   value: '',
   type: 'text',
   attributes: {}
 };
-var _default = exports["default"] = InputField;
+var _default = exports["default"] = (0, _Injector.inject)(['FieldGroup', 'Button'])(ImageTextGeneratorField);
 
 /***/ }),
 
@@ -218,6 +212,16 @@ var _default = exports["default"] = InputField;
 (function ($) {
   $(document).ready(() => {});
 })(jQuery);
+
+/***/ }),
+
+/***/ "classnames":
+/*!*****************************!*\
+  !*** external "classnames" ***!
+  \*****************************/
+/***/ (function(module) {
+
+module.exports = classnames;
 
 /***/ }),
 
