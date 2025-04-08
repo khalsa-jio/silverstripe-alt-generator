@@ -1,8 +1,8 @@
 <?php
 
-namespace KhalsaJio\AltGenerator\Extensions;
+namespace KhalsaJio\AltGenerator\Extension;
 
-use KhalsaJio\AltGenerator\Forms\Fields\ImageTextGeneratorField;
+use KhalsaJio\AltGenerator\Form\Field\ImageTextGeneratorField;
 use SilverStripe\Assets\File;
 use SilverStripe\Assets\Image;
 use SilverStripe\Core\Extension;

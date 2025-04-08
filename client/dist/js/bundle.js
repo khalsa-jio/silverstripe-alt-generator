@@ -80,6 +80,7 @@ const ImageTextGeneratorField = props => {
     onBlur,
     onFocus,
     imageID,
+    icon,
     FieldGroup,
     Button
   } = props;
@@ -159,7 +160,7 @@ const ImageTextGeneratorField = props => {
     }
     setLoading(false);
   };
-  const buttonClasses = ['tip tip--title', props.extraClass];
+  const buttonClasses = ['image-alt--input-group', 'btn btn--last', 'btn-outline-secondary', props.extraClass];
   const fieldGroupProps = {
     ...props,
     className: (0, _classnames.default)('image-text-generator-field', extraClass)
@@ -171,7 +172,8 @@ const ImageTextGeneratorField = props => {
     disabled: loading || disabled,
     loading: loading,
     noText: true,
-    className: (0, _classnames.default)(buttonClasses)
+    className: (0, _classnames.default)(buttonClasses),
+    icon: icon
   }, "Generate"))));
 };
 ImageTextGeneratorField.propTypes = {

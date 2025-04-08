@@ -1,15 +1,13 @@
 <?php
 namespace KhalsaJio\AltGenerator\Control;
 
+use KhalsaJio\AltGenerator\LLMClient;
 use SilverStripe\Assets\Image;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
-use SilverStripe\Core\Injector\Injector;
-use KhalsaJio\AltGenerator\Clients\OpenAI;
 
 class AltGeneratorController extends Controller
 {
-
     private static $url_segment = 'alt-generator';
 
     private static $url_handlers = [
@@ -23,14 +21,30 @@ class AltGeneratorController extends Controller
     public function generateAltText(HTTPRequest $request)
     {
         if (!$request->isAjax()) return $this->httpError(400);
-        
+
         $image = Image::get()->byID($request->param('ID'));
         if (!$image || !$image->exists()) {
             return $this->jsonResponse(['error' => 'Image not found'], 404);
         }
 
-        //convert image to base64
-        $imageData = file_get_contents($image->getAbsoluteURL());
+        // Check if the image is a valid type
+        $validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+        if (!in_array($image->getMimeType(), $validTypes)) {
+            return $this->jsonResponse(['error' => 'Invalid image type'], 400);
+        }
+
+        $maxSize = 1 * 1024 * 1024;
+        $imageSize = $image->getAbsoluteSize();
+
+        if ($imageSize > $maxSize) {
+            $imageURL = $image->ResizedImage(800, 800)->getAbsoluteURL();
+        } else {
+            $imageURL = $image->getAbsoluteURL();
+        }
+
+        // Read the image data
+        $imageData = file_get_contents($imageURL);
         if ($imageData === false) {
             return $this->jsonResponse(['error' => 'Failed to read image data'], 500);
         }
@@ -41,13 +55,11 @@ class AltGeneratorController extends Controller
         }
 
         try {
-            $client = Injector::inst()->create(OpenAI::class);
+            $client = LLMClient::singleton();
 
             $response = $client->generateAltText($base64Image, 100);
 
-            return $this->jsonResponse([
-                'altText' => $response['altText'],
-            ]);
+            return $this->jsonResponse($response);
         } catch (\Exception $e) {
             return $this->jsonResponse(['error' => $e->getMessage()], 500);
         }

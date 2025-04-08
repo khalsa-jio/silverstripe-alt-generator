@@ -1,6 +1,6 @@
 <?php
 
-namespace KhalsaJio\AltGenerator\Extensions;
+namespace KhalsaJio\AltGenerator\Extension;
 
 use SilverStripe\Core\Extension;
 

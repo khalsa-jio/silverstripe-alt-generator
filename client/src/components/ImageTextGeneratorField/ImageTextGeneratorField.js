@@ -24,6 +24,7 @@ const ImageTextGeneratorField = (props) => {
 
     // props for alt-text generation
     imageID,
+    icon,
 
     // injected props
     FieldGroup,
@@ -56,7 +57,7 @@ const ImageTextGeneratorField = (props) => {
         handleChange({ target: { value: targetText } });
       }
     };
-    
+
     type();
   }, [targetText]);
 
@@ -115,7 +116,13 @@ const ImageTextGeneratorField = (props) => {
     setLoading(false);
   };
 
-  const buttonClasses = ['image-alt--input-group', 'btn--last', 'btn-outline-secondary', props.extraClass]
+  const buttonClasses = [
+    'image-alt--input-group',
+    'btn btn--last',
+    'btn-outline-secondary',
+    props.extraClass
+  ];
+
   const fieldGroupProps = {
     ...props,
     className: classNames('image-text-generator-field', extraClass),
@@ -132,10 +139,8 @@ const ImageTextGeneratorField = (props) => {
             loading={loading}
             noText={true}
             className={classNames(buttonClasses)}
-          >
-            Generate
-          </Button>
-
+            icon={icon}
+          />
         </InputGroupAddon>
       </InputGroup>
     </FieldGroup>

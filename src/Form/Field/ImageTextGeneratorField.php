@@ -1,5 +1,6 @@
 <?php
-namespace KhalsaJio\AltGenerator\Forms\Fields;
+
+namespace KhalsaJio\AltGenerator\Form\Field;
 
 use SilverStripe\Forms\TextField;
 use SilverStripe\Assets\Image;
@@ -21,6 +22,8 @@ class ImageTextGeneratorField extends TextField
         if ($image = Image::get()->byID($this->getImageID())) {
             $data['imageID'] = $image->ID;
         }
+
+        $data['icon'] = 'p-news-item';
 
         return $data;
     }
