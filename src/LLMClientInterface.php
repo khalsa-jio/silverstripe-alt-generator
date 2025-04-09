@@ -22,8 +22,6 @@ interface LLMClientInterface
 
     /**
      * Get the model being used
-     *
-     * @return string
      */
     public function getModel(): string;
 
@@ -36,10 +34,23 @@ interface LLMClientInterface
 
     /**
      * Get the API key for the client
-     *
-     * @return string
      */
     public function getApiKey(): string;
+
+    /**
+     * Get the character limit for the client
+     */
+    public function getCharacterLimit(): int;
+
+    /**
+     * Set the character limit for the client
+     */
+    public function setCharacterLimit(): void;
+
+    /**
+     * Get the prompt for generating alt text
+     */
+    public function getPrompt(): string;
 
     /**
      * Validate client configuration
@@ -50,10 +61,8 @@ interface LLMClientInterface
      * Generate alt text for an image
      *
      * @param string $base_64_image Base64 encoded image data
-     * @param int|null $character_limit
-     * @param string|null $custom_prompt
      * @return array Format: ['success' => bool, 'altText' => string, 'usage' => array, 'error' => string]
      */
-    public function generateAltText($base_64_image, $character_limit = null, $custom_prompt = null);
+    public function generateAltText($base_64_image);
 }
 

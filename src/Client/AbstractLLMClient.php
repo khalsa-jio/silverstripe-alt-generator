@@ -24,11 +24,13 @@ abstract class AbstractLLMClient implements LLMClientInterface
 
     /**
      * @var string
+     * @config
      */
     protected $apiKey;
 
     /**
      * @var string
+     * @config
      */
     protected $model;
 
@@ -36,6 +38,18 @@ abstract class AbstractLLMClient implements LLMClientInterface
      * @var string
      */
     protected $apiUrl;
+
+    /**
+     * @var int
+     * @config
+     */
+    protected $characterLimit;
+
+    /**
+     * @var string
+     * @config
+     */
+    protected $prompt;
 
     /**
      * @var LoggerInterface
@@ -60,8 +74,6 @@ abstract class AbstractLLMClient implements LLMClientInterface
 
     /**
      * Get the default model to use
-     *
-     * @return string
      */
     abstract protected function getDefaultModel(): string;
 
@@ -74,12 +86,14 @@ abstract class AbstractLLMClient implements LLMClientInterface
             'base_uri' => $this->apiUrl,
             'headers' => $this->getRequestHeaders(),
         ]);
+
+        $this->setModel();
+        $this->setCharacterLimit();
+        $this->setPrompt();
     }
 
     /**
      * Get headers for API requests
-     *
-     * @return array
      */
     protected function getRequestHeaders(): array
     {
@@ -91,8 +105,6 @@ abstract class AbstractLLMClient implements LLMClientInterface
 
     /**
      * Get the API key
-     *
-     * @return string
      */
     public function getApiKey(): string
     {
@@ -119,8 +131,6 @@ abstract class AbstractLLMClient implements LLMClientInterface
 
     /**
      * Get the current model
-     *
-     * @return string
      */
     public function getModel(): string
     {
@@ -128,9 +138,44 @@ abstract class AbstractLLMClient implements LLMClientInterface
     }
 
     /**
+     * Get the character limit for the default prompt
+     */
+    public function getCharacterLimit(): int
+    {
+        return $this->characterLimit;
+    }
+
+    /**
+     * Set the character limit in the default prompt
+     */
+    public function setCharacterLimit(): void
+    {
+        $character_limit = self::config()->get('CharacterLimit');
+        if ($character_limit && is_int($character_limit) && $character_limit > 0) {
+            $this->characterLimit = $character_limit;
+        } else {
+            $this->characterLimit = 125;
+        }
+    }
+
+    /**
+     * Set the prompt for generating alt text
+     */
+    public function setPrompt(): void
+    {
+        $this->prompt = self::config()->get('Prompt') ?: $this->preparePrompt();
+    }
+
+    /**
+     * Get the prompt for generating alt text
+     */
+    public function getPrompt(): string
+    {
+        return $this->prompt;
+    }
+
+    /**
      * Validate configuration
-     *
-     * @return bool
      */
     public function validate(): bool
     {
@@ -203,19 +248,13 @@ abstract class AbstractLLMClient implements LLMClientInterface
     /**
      * Prepare the prompt for generating alt text
      *
-     * @param int|null $character_limit
-     * @param string|null $custom_prompt
      * @return string
      */
-    protected function preparePrompt($character_limit = null): string
+    protected function preparePrompt(): string
     {
-        $base_prompt = "Generate concise, descriptive alt text for this image";
-
-        // Add character limit instruction if specified
-        if ($character_limit && is_int($character_limit)) {
-            $base_prompt .= " in under {$character_limit} characters";
-        }
-
-        return "{$base_prompt}. Focus on key visual elements and context.";
+        return "Generate concise, descriptive alt text for this image" .
+        " in under {$this->getCharacterLimit()} characters. Focus on key" .
+        "visual elements and context. The alt text should be clear and" .
+        " informative, providing a brief description of the image content.";
     }
 }

@@ -118,26 +118,6 @@ class LLMClient
     }
 
     /**
-     * Set the LLM client to use
-     *
-     * @param string $client_class
-     * @param string|null $model
-     * @return void
-     */
-    public function set_llm_client($client_class, $model = null): void
-    {
-        if ($client_class && class_exists($client_class)) {
-            // Update config
-            self::config()->set('default_client', $client_class);
-
-            // Create and initialize new client
-            $this->initiate($client_class, $model);
-        } else {
-            throw new \InvalidArgumentException("Client $client_class is not a valid class");
-        }
-    }
-
-    /**
      * Get client name
      *
      * @return string
@@ -163,16 +143,14 @@ class LLMClient
      * Generate alt text for an image
      *
      * @param string $base_64_image Base64 encoded image data
-     * @param int|null $character_limit Maximum character count for alt text
-     * @param string|null $custom_prompt Optional custom prompt template
      * @return array
      */
-    public function generateAltText($base_64_image, $character_limit = null, $custom_prompt = null): array
+    public function generateAltText($base_64_image): array
     {
         $client = $this->getLLMClient();
 
         if ($client) {
-            return $client->generateAltText($base_64_image, $character_limit, $custom_prompt);
+            return $client->generateAltText($base_64_image);
         } else {
             return [
                 'success' => false,

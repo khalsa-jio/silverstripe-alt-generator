@@ -50,11 +50,9 @@ class Claude extends AbstractLLMClient
      * Generate alt text for an image
      *
      * @param string $base_64_image Base64 encoded image data
-     * @param int|null $character_limit Maximum character count for alt text
-     * @param string|null $custom_prompt Optional custom prompt template
      * @return array
      */
-    public function generateAltText($base_64_image, $character_limit = null, $custom_prompt = null)
+    public function generateAltText($base_64_image)
     {
         try {
             $data = [
@@ -65,7 +63,7 @@ class Claude extends AbstractLLMClient
                         'content' => [
                             [
                                 'type' => 'text',
-                                'text' => $custom_prompt ?? $this->preparePrompt($character_limit)
+                                'text' => $this->getPrompt(),
                             ],
                             [
                                 'type' => 'image',
