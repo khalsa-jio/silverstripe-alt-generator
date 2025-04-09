@@ -3,7 +3,6 @@
 namespace KhalsaJio\AltGenerator;
 
 use Psr\Log\LoggerInterface;
-use SilverStripe\Core\ClassInfo;
 use SilverStripe\Core\Extensible;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Core\Config\Configurable;
@@ -71,8 +70,6 @@ class LLMClient
         try {
             // Create client instance
             $client = Injector::inst()->create($client_class, $model);
-
-            $available_clients = $this->getAvailableClients();
 
             // Validate client implements the interface
             if (!($client instanceof LLMClientInterface)) {
@@ -186,24 +183,5 @@ class LLMClient
                 'model' => null,
             ];
         }
-    }
-
-    /**
-     * Get available client classes
-     *
-     * @return array
-     */
-    public function getAvailableClients(): array
-    {
-        $available = [];
-        $interfaces = ClassInfo::implementorsOf(LLMClientInterface::class);
-
-        foreach ($interfaces as $class) {
-            if (method_exists($class, 'getClientName')) {
-                $available[$class] = $class::getClientName();
-            }
-        }
-
-        return $available;
     }
 }

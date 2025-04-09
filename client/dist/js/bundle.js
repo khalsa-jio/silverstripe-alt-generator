@@ -174,7 +174,7 @@ const ImageTextGeneratorField = props => {
     noText: true,
     className: (0, _classnames.default)(buttonClasses),
     icon: icon
-  }, "Generate"))));
+  }))));
 };
 ImageTextGeneratorField.propTypes = {
   extraClass: _propTypes.default.string,
