@@ -63,7 +63,10 @@ abstract class AbstractLLMClient implements LLMClientInterface
      */
     public function __construct()
     {
-        $this->setModel();
+        // Set default 
+        $this->model = $this->getDefaultModel();
+        $this->characterLimit = 200;
+        $this->prompt = $this->preparePrompt();
 
         try {
             $this->logger = Injector::inst()->get(LoggerInterface::class);
@@ -86,10 +89,6 @@ abstract class AbstractLLMClient implements LLMClientInterface
             'base_uri' => $this->apiUrl,
             'headers' => $this->getRequestHeaders(),
         ]);
-
-        $this->setModel();
-        $this->setCharacterLimit();
-        $this->setPrompt();
     }
 
     /**
@@ -108,7 +107,7 @@ abstract class AbstractLLMClient implements LLMClientInterface
      */
     public function getApiKey(): string
     {
-        return $this->apiKey ?? self::config()->get('apiKey');
+        return $this->apiKey ?? self::config()->get('ApiKey');
     }
 
     /**
@@ -124,9 +123,9 @@ abstract class AbstractLLMClient implements LLMClientInterface
     /**
      * Set the model to use
      */
-    public function setModel(): void
+    public function setModel($model): void
     {
-        $this->model = self::config()->get('model') ?: $this->getDefaultModel();
+        $this->model = $model;
     }
 
     /**
@@ -134,7 +133,7 @@ abstract class AbstractLLMClient implements LLMClientInterface
      */
     public function getModel(): string
     {
-        return $this->model ?: $this->getDefaultModel();
+        return $this->model;
     }
 
     /**
@@ -148,22 +147,19 @@ abstract class AbstractLLMClient implements LLMClientInterface
     /**
      * Set the character limit in the default prompt
      */
-    public function setCharacterLimit(): void
+    public function setCharacterLimit($character_limit): void
     {
-        $character_limit = self::config()->get('CharacterLimit');
         if ($character_limit && is_int($character_limit) && $character_limit > 0) {
             $this->characterLimit = $character_limit;
-        } else {
-            $this->characterLimit = 125;
         }
     }
 
     /**
      * Set the prompt for generating alt text
      */
-    public function setPrompt(): void
+    public function setPrompt($prompt): void
     {
-        $this->prompt = self::config()->get('Prompt') ?: $this->preparePrompt();
+        $this->prompt = $prompt;
     }
 
     /**

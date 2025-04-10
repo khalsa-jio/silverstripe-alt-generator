@@ -37,10 +37,16 @@ class AltGeneratorController extends Controller
         $maxSize = 1 * 1024 * 1024;
         $imageSize = $image->getAbsoluteSize();
 
+        // Check if the image size exceeds the limit and resize if necessary
         if ($imageSize > $maxSize) {
-            $imageURL = $image->ResizedImage(800, 800)->getAbsoluteURL();
+            $imageURL = $image
+                ->ResizedImage(800, 800)
+                ->Convert('webp')
+                ->getAbsoluteURL();
         } else {
-            $imageURL = $image->getAbsoluteURL();
+            $imageURL = $image
+                ->Convert('webp')
+                ->getAbsoluteURL();
         }
 
         // Read the image data
@@ -57,7 +63,7 @@ class AltGeneratorController extends Controller
         try {
             $client = LLMClient::singleton();
 
-            $response = $client->generateAltText($base64Image, 100);
+            $response = $client->generateAltText($base64Image);
 
             return $this->jsonResponse($response);
         } catch (\Exception $e) {

@@ -18,7 +18,7 @@ interface LLMClientInterface
     /**
      * Set the model to use
      */
-    public function setModel(): void;
+    public function setModel($model): void;
 
     /**
      * Get the model being used
@@ -45,12 +45,17 @@ interface LLMClientInterface
     /**
      * Set the character limit for the client
      */
-    public function setCharacterLimit(): void;
+    public function setCharacterLimit($character_limit): void;
 
     /**
      * Get the prompt for generating alt text
      */
     public function getPrompt(): string;
+
+    /**
+     * Set the prompt for generating alt text
+     */
+    public function setPrompt($prompt): void;
 
     /**
      * Validate client configuration
