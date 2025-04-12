@@ -59,7 +59,7 @@ const ImageTextGeneratorField = (props) => {
       if (index < targetText.length) {
         setDisplayText(targetText.substring(0, index + 1));
         index += 1;
-        setTimeout(type, speed);
+        setTimeout(textType, speed);
       } else {
         handleChange({ target: { value: targetText } });
       }
