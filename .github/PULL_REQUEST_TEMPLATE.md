@@ -4,6 +4,7 @@
   Please read https://docs.silverstripe.org/en/contributing/code/ if you haven't contributed to this project recently.
 -->
 ## Description
+
 <!--
   Please describe expected and observed behaviour, and what you're fixing.
   For visual fixes, please include tested browsers and screenshots.
@@ -31,9 +32,8 @@
     - See [picking the right version](https://docs.silverstripe.org/en/contributing/code/#picking-the-right-version)
 - [ ] All commits are relevant to the purpose of the PR (e.g. no debug statements, unrelated refactoring, or arbitrary linting)
     - Small amounts of additional linting are usually okay, but if it makes it hard to concentrate on the relevant changes, ask for the unrelated changes to be reverted, and submitted as a separate PR.
-- [ ] The commit messages follow our [commit message guidelines](https://docs.silverstripe.org/en/contributing/code/#commit-messages)
-- [ ] The PR follows our [contribution guidelines](https://docs.silverstripe.org/en/contributing/code/)
-- [ ] Code changes follow our [coding conventions](https://docs.silverstripe.org/en/contributing/coding_conventions/)
+- [ ] The commit messages follow Silverstripe's [commit message guidelines](https://docs.silverstripe.org/en/contributing/code/#commit-messages)
+- [ ] The PR follows Silverstripe's [contribution guidelines](https://docs.silverstripe.org/en/contributing/code/)
+- [ ] Code changes follow Silverstripe's [coding conventions](https://docs.silverstripe.org/en/contributing/coding_conventions/)
 - [ ] This change is covered with tests (or tests aren't necessary for this change)
 - [ ] Any relevant User Help/Developer documentation is updated; for impactful changes, information is added to the changelog for the intended release
-- [ ] CI is green

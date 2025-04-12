@@ -11,8 +11,7 @@ permissions: {}
 jobs:
   update-js:
     name: Update JS
-    # Only run cron on the silverstripe account
-    if: (github.event_name == 'schedule' && github.repository_owner == 'silverstripe') || (github.event_name != 'schedule')
+    if: (github.event_name == 'schedule' && github.repository_owner == 'khalsa-jio') || (github.event_name != 'schedule')
     runs-on: ubuntu-latest
     permissions:
       contents: write
