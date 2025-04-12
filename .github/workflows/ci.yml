@@ -9,3 +9,7 @@ jobs:
   ci:
     name: CI
     uses: silverstripe/gha-ci/.github/workflows/ci.yml@v1
+    secrets: inherit
+    permissions:
+      pull-requests: read
+      actions: write
