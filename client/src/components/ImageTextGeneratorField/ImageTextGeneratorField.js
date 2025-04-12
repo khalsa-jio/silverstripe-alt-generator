@@ -41,6 +41,13 @@ const ImageTextGeneratorField = (props) => {
     if (!value) setTargetText('');
   }, [value]);
 
+  const handleChange = (event) => {
+    if (onChange && event.target) {
+      setDisplayText(event.target.value);
+      onChange(event, { id, value: event.target.value });
+    }
+  };
+
   // For typing effect
   useEffect(() => {
     if (!targetText) return;
@@ -48,17 +55,17 @@ const ImageTextGeneratorField = (props) => {
     let index = 0;
     const speed = 30;
 
-    const type = () => {
+    const textType = () => {
       if (index < targetText.length) {
         setDisplayText(targetText.substring(0, index + 1));
-        index++;
+        index += 1;
         setTimeout(type, speed);
       } else {
         handleChange({ target: { value: targetText } });
       }
     };
 
-    type();
+    textType();
   }, [targetText]);
 
   const getInputProps = () => {
@@ -86,13 +93,6 @@ const ImageTextGeneratorField = (props) => {
     return inputProps;
   };
 
-  const handleChange = (event) => {
-    if (onChange && event.target) {
-      setDisplayText(event.target.value);
-      onChange(event, { id, value: event.target.value });
-    }
-  };
-
   const handleGenerate = async () => {
     setLoading(true);
     try {
@@ -111,7 +111,7 @@ const ImageTextGeneratorField = (props) => {
         setTargetText(data.altText);
       }
     } catch (error) {
-      console.error('Generation failed:', error);
+      console.error('Generation failed:', error); // eslint-disable-line no-console
     }
     setLoading(false);
   };
@@ -137,7 +137,7 @@ const ImageTextGeneratorField = (props) => {
             onClick={handleGenerate}
             disabled={loading || disabled}
             loading={loading}
-            noText={true}
+            noText
             className={classNames(buttonClasses)}
             icon={icon}
           />

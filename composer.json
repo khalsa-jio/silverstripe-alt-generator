@@ -1,5 +1,5 @@
 {
-    "name": "khalsa-jio/alt-generator",
+    "name": "khalsa-jio/silverstripe-alt-generator",
     "description": "A SilverStripe module that generates alt text for images using LLM clients like OpenAI, Claude or other custom LLMs.",
     "type": "silverstripe-vendormodule",
     "keywords": [

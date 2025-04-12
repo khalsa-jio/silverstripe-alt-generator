@@ -15,7 +15,7 @@ Installation
 ------------
 
 ```bash
-composer require khalsa-jio/alt-generator
+composer require khalsa-jio/silverstripe-alt-generator
 ```
 
 Configuration

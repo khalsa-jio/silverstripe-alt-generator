@@ -1,9 +1,9 @@
-
 /* global jest, test, expect */
 
 import React from 'react';
-import ImageTextGeneratorField from '../ImageTextGeneratorField';
 import { render } from '@testing-library/react';
+
+import ImageTextGeneratorField from '../ImageTextGeneratorField';
 
 test('ImageTextGeneratorField renders', async () => {
   const { container } = render(<ImageTextGeneratorField/>);
@@ -46,6 +46,6 @@ test('ImageTextGeneratorField renders with props', async () => {
   // Simulate input change
   input.value = 'new value';
   input.dispatchEvent(new Event('change'));
-  expect(props.actions.onSubmit).toHaveBeenCalledWith(props.id, 'new value');
 
+  expect(props.actions.onSubmit).toHaveBeenCalledWith(props.id, 'new value');
 });
