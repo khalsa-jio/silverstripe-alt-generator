@@ -16,11 +16,3 @@ jobs:
       actions: write
     with:
       simple_matrix: true
-      php_versions: '8.0, 8.1, 8.2'
-      php_extensions: 'intl, mbstring, xml, zip'
-      php_ini_overrides: |
-        error_reporting = E_ALL
-        display_errors = 1
-        display_startup_errors = 1
-        memory_limit = -1
-      composer_args: '--prefer-dist --no-progress --no-suggest'
