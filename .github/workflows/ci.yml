@@ -17,5 +17,3 @@ jobs:
     with:
       simple_matrix: true
       js: false
-      php: 8.2
-      db: mariadb
