@@ -1,88 +1,128 @@
-# Silverstripe CMS supported module skeleton
+Image - Alt Generator
+========================
 
-A useful skeleton to more easily create a [Silverstripe CMS Module](https://docs.silverstripe.org/en/developer_guides/extending/modules/) that conform to the
-[Module Standard](https://docs.silverstripe.org/en/developer_guides/extending/modules/#module-standard).
+This module adds a new `AltText` field to the `File` DataObject and provides a simple Text field in Assets Admin while editing image to generate alt text using LLM clients which can be configured using yaml file.
 
-This README contains descriptions of the parts of this module base you should customise to meet you own module needs.
-For example, the module name in the H1 above should be you own module name, and the description text you are reading now
-is where you should provide a good short explanation of what your module does.
+Requirements
+------------
 
-Where possible we have included default text that can be included as is into your module and indicated in
-other places where you need to customise it
+* Silverstripe framework ^5
+* Silverstripe admin ^2
+* Silverstripe asset-admin ^2
+* Guzzle ^7
 
-Below is a template of the sections of your `README.md` you should ideally include to met the Module Standard
-and help others make use of your modules.
+Installation
+------------
 
-## Steps to prepare this module for your own use
-
-Ensure you read the
-['publishing a module'](https://docs.silverstripe.org/en/developer_guides/extending/how_tos/publish_a_module/) guide
-and update your module's `composer.json` to designate your code as a Silversripe CMS module.
-
-- Clone this repository into a folder
-- Add your name/organisation to `LICENSE.md`
-- Update this README with information about your module. Ensure sections that aren't relevant are deleted and
-placeholders are edited where relevant
-- Review the README files in the various provided directories. You should ultimately delete these README files when you have added your code
-- Update the module's `composer.json` with your requirements and package name
-- Update (or remove) `package.json` with your requirements and package name. Run `yarn install` (or remove `yarn.lock`) to
-ensure dependencies resolve correctly
-- Clear the git history by running `rm -rf .git && git init`
-- Add and push to a VCS repository
-- Either [publish](https://getcomposer.org/doc/02-libraries.md#publishing-to-packagist) the module on packagist.org, or add a [custom repository](https://getcomposer.org/doc/02-libraries.md#publishing-to-a-vcs) to your main `composer.json`
-- Require the module in your main `composer.json`
-- If you need to build your css or js and are using components, injector, scss variables, etc from `silverstripe/admin`:
-  - Ensure that `silverstripe/admin` is installed with `composer install --prefer-source` instead of the default `--prefer-dist` (you can use `composer reinstall silverstripe/admin --prefer-source` if you already installed it)
-  - If you are relying on additional dependencies from `silverstripe/admin` instead of adding them as dependencies in your `package.json` file, you need to install third party dependencies in `silverstripe/admin` by running `yarn install` in the `vendor/silverstripe/admin/` directory.
-- Start developing your module!
-
-## License
-
-See [License](LICENSE.md)
-
-This module template defaults to using the "BSD-3-Clause" license. The BSD-3 license is one of the most
-permissive open-source license and is used by most Silverstripe CMS module.
-
-To publish your module under a different license:
-
-- update the [`license.md`](LICENSE.md) file
-- update the `license' key in your [`composer.json`](composer.json).
-
-You can use [choosealicense.com](https://choosealicense.com) to help you pick a suitable license for your project.
-
-You do not need to keep this section in your README file - the `LICENSE.md` file is sufficient.
-
-## Installation
-
-Replace `silverstripe-module/skeleton` in the command below with the composer name of your module.
-
-```sh
-composer require silverstripe-module/skeleton
+```bash
+composer require khalsa-jio/alt-generator
 ```
 
-**Note:** When you have completed your module, submit it to Packagist or add it as a VCS repository to your
-project's composer.json, pointing to the private repository URL.
+Configuration
+-------------
 
-## Documentation
+You can configure the module using YAML file. Either create a new YAML file in your `app/_config` directory or add the configuration to an existing YAML file.
 
-- [Documentation readme](docs/en/README.md)
-
-Add links into your `docs/<language>` folder here unless your module only requires minimal documentation
-in that case, add here and remove the docs folder. You might use this as a quick table of content if you
-mhave multiple documentation pages.
-
-## Example configuration
-
-If your module makes use of the config API in Silverstripe CMS it's a good idea to provide an example config
-here that will get the module working out of the box and expose the user to the possible configuration options.
-Though note that in many cases simply linking to the documentation is enough.
-
-Provide a syntax-highlighted code examples where possible.
+The configuration file should contain the following:
 
 ```yaml
-Page:
-  config_option: true
-  another_config:
-    - item1
-    - item2
+---
+Name: alt-generator
+---
+
+KhalsaJio\AltGenerator\LLMClient:
+  default_client: "KhalsaJio\AltGenerator\Client\OpenAI" # or "KhalsaJio\AltGenerator\Client\Claude" - The default LLM client to use - required
+
+  # Configurations for default client
+SilverStripe\Core\Injector\Injector:
+    KhalsaJio\AltGenerator\Client\OpenAI: # or "KhalsaJio\AltGenerator\Client\Claude"
+        properties:
+            ApiKey: '`OPENAI_API_KEY`' # can be set in .env file - required
+            Model: 'gpt-4o-mini-2024-07-18' # default - optional
+            CharacterLimit: 2000 # default - optional
+            Prompt: '' # default can be found in the `AbstractLLClient` file under preparePrompt() method - optional
+
 ```
+
+Custom Client
+-------------
+
+For those planning to use a different provider or who have their own client, you can create a your own custom LLM client by extending the `KhalsaJio\AltGenerator\Client\AbstractLLClient` class. This gives you the freedom to implement your own alt text generation logic.
+
+```php
+
+namespace KhalsaJio\AltGenerator\Client;
+
+use KhalsaJio\AltGenerator\Client\AbstractLLClient;
+
+class CustomLLClient extends AbstractLLClient
+{
+    /**
+     * The API BASE_URL for your custom LLM client
+     */
+    protected $apiUrl = 'https://api.customllclient.com';
+
+    /**
+     * The default model for your custom LLM client
+     */
+    protected function getDefaultModel(): string
+    {
+        return 'custom-model';
+    }
+
+    /**
+     * The name of your custom LLM client
+     */
+    public static function getClientName(): string
+    {
+        return 'CustomLLClient';
+    }
+
+    /**
+     * This method is called to generate alt text for the image
+     */
+    public function generateAltText($base_64_image)
+    {
+        try {
+            // This is example so you should change it according to your LLM client
+            $requestBody = [
+                'image' => $base_64_image,
+                'model' => $this->getModel(),
+                'prompt' => $this->preparePrompt(),
+            ];
+
+            $response = $this->client->post('API_ENDPOINT',  [
+                RequestOptions::JSON => $data
+            ]);
+        
+            $result = json_decode($response->getBody()->getContents(), true);
+
+            return $this->formatResponse($result);
+
+        } catch (\Exception $e) {
+            return $this->formatErrorResponse($e);
+        }
+    }
+
+    /**
+     * This method is used to extract alt text from the response
+     */
+    protected function extractAltText($result): string
+    {
+        return $result['alt_text'] ?? '';
+    }
+
+    /**
+     * This method is used to extract usage data from the response
+     */
+    protected function extractUsageData($result): array
+    {
+        return $result['usage'] ?? [];
+    }
+}
+```
+
+Reporting Issues
+----------------
+
+Please [create an issue](https://github.com/khalsa-jio/alt-generator/issues) for any bugs you've found, or features you're missing.

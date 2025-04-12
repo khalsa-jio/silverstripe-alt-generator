@@ -30,7 +30,6 @@ class ImageAltGeneratorFormFactoryExtension extends Extension
             if ($type === AssetFormFactory::TYPE_SELECT) {
                 $fields->insertAfter('Title', $altTextField->performReadonlyTransformation());
             } else {
-
                 $fields->insertAfter('Title', $altTextField);
             }
         }

@@ -67,7 +67,6 @@ class OpenAI extends AbstractLLMClient
             $result = json_decode($response->getBody()->getContents(), true);
 
             return $this->formatResponse($result);
-
         } catch (\Exception $e) {
             return $this->formatErrorResponse($e);
         }

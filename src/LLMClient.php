@@ -90,7 +90,7 @@ class LLMClient
             return $client;
         } catch (\Exception $e) {
             $this->logError("Failed to initialize LLM client: " . $e->getMessage());
-            
+
             throw $e;
         }
     }

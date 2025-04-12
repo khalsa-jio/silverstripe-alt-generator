@@ -63,7 +63,7 @@ abstract class AbstractLLMClient implements LLMClientInterface
      */
     public function __construct()
     {
-        // Set default 
+        // Set default configurations
         $this->model = $this->getDefaultModel();
         $this->characterLimit = 200;
         $this->prompt = $this->preparePrompt();

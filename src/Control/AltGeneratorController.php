@@ -1,4 +1,5 @@
 <?php
+
 namespace KhalsaJio\AltGenerator\Control;
 
 use KhalsaJio\AltGenerator\LLMClient;
@@ -20,7 +21,9 @@ class AltGeneratorController extends Controller
 
     public function generateAltText(HTTPRequest $request)
     {
-        if (!$request->isAjax()) return $this->httpError(400);
+        if (!$request->isAjax()) {
+            return $this->httpError(400);
+        }
 
         $image = Image::get()->byID($request->param('ID'));
         if (!$image || !$image->exists()) {

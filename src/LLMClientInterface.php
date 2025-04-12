@@ -70,4 +70,3 @@ interface LLMClientInterface
      */
     public function generateAltText($base_64_image);
 }
-
