@@ -16,8 +16,10 @@
     "lint-sass": "sass-lint client/src"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "core-js": "^3.26.0",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "reactstrap": "^8.9.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.20.0",

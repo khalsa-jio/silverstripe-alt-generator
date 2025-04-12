@@ -91,14 +91,23 @@ const ImageTextGeneratorField = props => {
     setDisplayText(value || '');
     if (!value) setTargetText('');
   }, [value]);
+  const handleChange = event => {
+    if (onChange && event.target) {
+      setDisplayText(event.target.value);
+      onChange(event, {
+        id,
+        value: event.target.value
+      });
+    }
+  };
   (0, _react.useEffect)(() => {
     if (!targetText) return;
     let index = 0;
     const speed = 30;
-    const type = () => {
+    const textType = () => {
       if (index < targetText.length) {
         setDisplayText(targetText.substring(0, index + 1));
-        index++;
+        index += 1;
         setTimeout(type, speed);
       } else {
         handleChange({
@@ -108,7 +117,7 @@ const ImageTextGeneratorField = props => {
         });
       }
     };
-    type();
+    textType();
   }, [targetText]);
   const getInputProps = () => {
     const inputProps = {
@@ -131,15 +140,6 @@ const ImageTextGeneratorField = props => {
       inputProps.onChange = handleChange;
     }
     return inputProps;
-  };
-  const handleChange = event => {
-    if (onChange && event.target) {
-      setDisplayText(event.target.value);
-      onChange(event, {
-        id,
-        value: event.target.value
-      });
-    }
   };
   const handleGenerate = async () => {
     setLoading(true);
@@ -202,21 +202,6 @@ var _default = exports["default"] = (0, _Injector.inject)(['FieldGroup', 'Button
 
 /***/ }),
 
-/***/ "./client/src/entwine/example-file.js":
-/*!********************************************!*\
-  !*** ./client/src/entwine/example-file.js ***!
-  \********************************************/
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-/* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "jquery");
-
-
-(function ($) {
-  $(document).ready(() => {});
-})(jQuery);
-
-/***/ }),
-
 /***/ "classnames":
 /*!*****************************!*\
   !*** external "classnames" ***!
@@ -224,16 +209,6 @@ var _default = exports["default"] = (0, _Injector.inject)(['FieldGroup', 'Button
 /***/ (function(module) {
 
 module.exports = classnames;
-
-/***/ }),
-
-/***/ "jquery":
-/*!*************************!*\
-  !*** external "jQuery" ***!
-  \*************************/
-/***/ (function(module) {
-
-module.exports = jQuery;
 
 /***/ }),
 
@@ -312,7 +287,6 @@ var __webpack_exports__ = {};
   \**************************************/
 
 
-__webpack_require__(/*! entwine/example-file */ "./client/src/entwine/example-file.js");
 __webpack_require__(/*! boot */ "./client/src/boot/index.js");
 }();
 /******/ })()
