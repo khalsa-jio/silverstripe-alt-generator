@@ -12,4 +12,4 @@ SilverStripe\AssetAdmin\Forms\ImageFormFactory:
 
 SilverStripe\Admin\LeftAndMain:
   extra_requirements_javascript:
-    - 'khalsa-jio/alt-generator: client/dist/js/bundle.js'
+    - 'khalsa-jio/silverstripe-alt-generator: client/dist/js/bundle.js'

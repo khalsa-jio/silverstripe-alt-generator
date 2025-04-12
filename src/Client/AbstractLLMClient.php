@@ -107,7 +107,7 @@ abstract class AbstractLLMClient implements LLMClientInterface
      */
     public function getApiKey(): string
     {
-        return $this->apiKey ?? self::config()->get('ApiKey');
+        return $this->apiKey;
     }
 
     /**

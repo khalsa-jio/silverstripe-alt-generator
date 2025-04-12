@@ -125,4 +125,4 @@ class CustomLLClient extends AbstractLLClient
 Reporting Issues
 ----------------
 
-Please [create an issue](https://github.com/khalsa-jio/alt-generator/issues) for any bugs you've found, or features you're missing.
+Please [create an issue](https://github.com/khalsa-jio/silverstripe-alt-generator/issues) for any bugs you've found, or features you're missing.
