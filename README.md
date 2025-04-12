@@ -31,7 +31,7 @@ Name: alt-generator
 ---
 
 KhalsaJio\AltGenerator\LLMClient:
-  default_client: "KhalsaJio\AltGenerator\Client\OpenAI" # or "KhalsaJio\AltGenerator\Client\Claude" - The default LLM client to use - required
+  default_client: KhalsaJio\AltGenerator\Client\OpenAI # or "KhalsaJio\AltGenerator\Client\Claude" - The default LLM client to use - required
 
   # Configurations for default client
 SilverStripe\Core\Injector\Injector:
@@ -39,7 +39,7 @@ SilverStripe\Core\Injector\Injector:
         properties:
             ApiKey: '`OPENAI_API_KEY`' # can be set in .env file - required
             Model: 'gpt-4o-mini-2024-07-18' # default - optional
-            CharacterLimit: 2000 # default - optional
+            CharacterLimit: 125 # default - optional, must be less than or equal to 200
             Prompt: '' # default can be found in the `AbstractLLClient` file under preparePrompt() method - optional
 
 ```

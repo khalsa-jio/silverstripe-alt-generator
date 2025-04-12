@@ -7,6 +7,6 @@ use SilverStripe\Core\Extension;
 class ImageAltGeneratorExtension extends Extension
 {
     private static array $db = [
-        'AltText' => 'Varchar(100)',
+        'AltText' => 'Varchar(200)',
     ];
 }
