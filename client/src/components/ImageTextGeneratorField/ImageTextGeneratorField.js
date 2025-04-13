@@ -29,6 +29,7 @@ const ImageTextGeneratorField = (props) => {
     // injected props
     FieldGroup,
     Button,
+    Loading,
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -129,21 +130,24 @@ const ImageTextGeneratorField = (props) => {
   };
 
   return (
-    <FieldGroup {...fieldGroupProps}>
-      <InputGroup>
-        <Input {...getInputProps()} />
-        <InputGroupAddon addonType="append">
-          <Button
-            onClick={handleGenerate}
-            disabled={loading || disabled}
-            loading={loading}
-            noText
-            className={classNames(buttonClasses)}
-            icon={icon}
-          />
-        </InputGroupAddon>
-      </InputGroup>
-    </FieldGroup>
+    <>
+      {loading && <Loading className="image-text-generator-field__loading" />}
+      <FieldGroup {...fieldGroupProps}>
+        <InputGroup>
+          <Input {...getInputProps()} />
+          <InputGroupAddon addonType="append">
+            <Button
+              onClick={handleGenerate}
+              disabled={loading || disabled}
+              loading={loading}
+              noText
+              className={classNames(buttonClasses)}
+              icon={icon}
+            />
+          </InputGroupAddon>
+        </InputGroup>
+      </FieldGroup>
+    </>
   );
 };
 
@@ -172,5 +176,5 @@ ImageTextGeneratorField.defaultProps = {
 };
 
 export default inject(
-  ['FieldGroup', 'Button']
+  ['FieldGroup', 'Button', 'Loading']
 )(ImageTextGeneratorField);
