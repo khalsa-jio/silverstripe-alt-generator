@@ -9,7 +9,7 @@ class OpenAI extends OpenAIProvider
 {
     use AltGeneratorTrait;
 
-    private function __construct()
+    public function __construct()
     {
         parent::__construct();
 

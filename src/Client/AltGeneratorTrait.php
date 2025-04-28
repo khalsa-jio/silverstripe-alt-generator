@@ -26,6 +26,10 @@ trait AltGeneratorTrait
      */
     public function setPrompt($prompt): void
     {
+        if (empty($prompt)) {
+            throw new \InvalidArgumentException("Prompt cannot be empty");
+        }
+
         $this->prompt = $prompt;
     }
 
@@ -52,11 +56,10 @@ trait AltGeneratorTrait
     public function setCharacterLimit(int $character_limit): void
     {
         if ($character_limit <= 0) {
-            throw new InvalidArgumentException("Character limit must be positive");
+            throw new \InvalidArgumentException("Character limit must be positive");
         }
 
         $this->characterLimit = $character_limit;
-        $this->updatePrompt();
     }
 
     /**

@@ -108,13 +108,14 @@ const ImageTextGeneratorField = (props) => {
       );
       const data = await response.json();
 
-      if (data.altText) {
-        setTargetText(data.altText);
+      if (data.content) {
+        setTargetText(data.content);
       }
     } catch (error) {
       console.error('Generation failed:', error); // eslint-disable-line no-console
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const buttonClasses = [
