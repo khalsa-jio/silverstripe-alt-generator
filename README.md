@@ -3,7 +3,7 @@ Image - Alt Generator
 
 This module adds a new `AltText` field to the `File` DataObject and provides a simple Text field in Assets Admin while editing image to generate alt text using LLM clients which can be configured using yaml file.
 
-<video src="https://github.com/user-attachments/assets/db0dcf62-0e49-45a7-9a16-a9b897892110"></video>
+![Alt Generator Demo](https://github.com/user-attachments/assets/db0dcf62-0e49-45a7-9a16-a9b897892110)
 
 Requirements
 ------------
@@ -11,7 +11,7 @@ Requirements
 * Silverstripe framework ^5
 * Silverstripe admin ^2
 * Silverstripe asset-admin ^2
-* Guzzle ^7
+* KhalsaJio SilverStripe AI Nexus ^1.0
 
 Installation
 ------------
@@ -32,7 +32,7 @@ The configuration file should contain the following:
 Name: alt-generator
 ---
 
-KhalsaJio\AltGenerator\LLMClient:
+KhalsaJio\\AI\Nexus\LLMClient:
   default_client: KhalsaJio\AltGenerator\Client\OpenAI # or "KhalsaJio\AltGenerator\Client\Claude" - The default LLM client to use - required
 
   # Configurations for default client
@@ -49,16 +49,18 @@ SilverStripe\Core\Injector\Injector:
 Custom Client
 -------------
 
-For those planning to use a different provider or who have their own client, you can create a your own custom LLM client by extending the `KhalsaJio\AltGenerator\Client\AbstractLLClient` class. This gives you the freedom to implement your own alt text generation logic.
+For those planning to use a different provider or who have their own client, you can create a your own custom LLM client by extending the `KhalsaJio\AI\Nexus\Provider\AbstractLLClient` class. This gives you the freedom to implement your own alt text generation logic.
 
 ```php
 
 namespace KhalsaJio\AltGenerator\Client;
 
-use KhalsaJio\AltGenerator\Client\AbstractLLClient;
+use KhalsaJio\AI\Nexus\Provider\AbstractLLClient;
+use KhalsaJio\AltGenerator\Client\AltGeneratorTrait;
 
 class CustomLLClient extends AbstractLLClient
 {
+    use AltGeneratorTrait;
     /**
      * The API BASE_URL for your custom LLM client
      */
@@ -80,30 +82,27 @@ class CustomLLClient extends AbstractLLClient
         return 'CustomLLClient';
     }
 
+     private function __construct()
+    {
+        parent::__construct();
+
+        // This method is used to initialize the default prompt
+        $this->initAltGenerator();
+    }
+
     /**
      * This method is called to generate alt text for the image
      */
     public function generateAltText($base_64_image)
     {
-        try {
-            // This is example so you should change it according to your LLM client
-            $requestBody = [
-                'image' => $base_64_image,
-                'model' => $this->getModel(),
-                'prompt' => $this->preparePrompt(),
-            ];
+        // This is example so you should change it according to your LLM client
+        $requestBody = [
+            'image' => $base_64_image,
+            'model' => $this->getModel(),
+            'prompt' => $this->preparePrompt(),
+        ];
 
-            $response = $this->client->post('API_ENDPOINT',  [
-                RequestOptions::JSON => $data
-            ]);
-        
-            $result = json_decode($response->getBody()->getContents(), true);
-
-            return $this->formatResponse($result);
-
-        } catch (\Exception $e) {
-            return $this->formatErrorResponse($e);
-        }
+        return $this->chat($requestBody, 'API_ENDPOINT');
     }
 
     /**
@@ -111,7 +110,7 @@ class CustomLLClient extends AbstractLLClient
      */
     protected function extractAltText($result): string
     {
-        return $result['alt_text'] ?? '';
+        return $result['message'] ?? '';
     }
 
     /**

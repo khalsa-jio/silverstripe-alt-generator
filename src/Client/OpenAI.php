@@ -2,34 +2,18 @@
 
 namespace KhalsaJio\AltGenerator\Client;
 
-use GuzzleHttp\RequestOptions;
+use KhalsaJio\AI\Nexus\Provider\OpenAI as OpenAIProvider;
+use KhalsaJio\AltGenerator\Client\AltGeneratorTrait;
 
-class OpenAI extends AbstractLLMClient
+class OpenAI extends OpenAIProvider
 {
-    /**
-     * API URL for OpenAI Image and Vision API
-     * @var string
-     */
-    protected $apiUrl = 'https://api.openai.com';
+    use AltGeneratorTrait;
 
-    /**
-     * Get the default model to use
-     *
-     * @return string
-     */
-    protected function getDefaultModel(): string
+    private function __construct()
     {
-        return 'gpt-4o-mini-2024-07-18';
-    }
+        parent::__construct();
 
-    /**
-     * Get client name
-     *
-     * @return string
-     */
-    public static function getClientName(): string
-    {
-        return 'OpenAI';
+        $this->initAltGenerator();
     }
 
     /**
@@ -40,9 +24,7 @@ class OpenAI extends AbstractLLMClient
      */
     public function generateAltText($base_64_image)
     {
-        try {
             $data = [
-                'model' => $this->getModel(),
                 'input' => [
                     [
                         'role' => 'user',
@@ -60,37 +42,6 @@ class OpenAI extends AbstractLLMClient
                 ],
             ];
 
-            $response = $this->client->post('/v1/responses', [
-                RequestOptions::JSON => $data
-            ]);
-
-            $result = json_decode($response->getBody()->getContents(), true);
-
-            return $this->formatResponse($result);
-        } catch (\Exception $e) {
-            return $this->formatErrorResponse($e);
-        }
-    }
-
-    /**
-     * Extract alt text from response
-     *
-     * @param array $result
-     * @return string
-     */
-    protected function extractAltText($result): string
-    {
-        return trim($result['output'][0]['content'][0]['text'] ?? '');
-    }
-
-    /**
-     * Extract usage data from response
-     *
-     * @param array $result
-     * @return array
-     */
-    protected function extractUsageData($result): array
-    {
-        return $result['usage'] ?? [];
+        return $this->chat($data, 'responses');
     }
 }
