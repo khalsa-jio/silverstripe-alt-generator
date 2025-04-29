@@ -3,7 +3,7 @@ Image - Alt Generator
 
 This module adds a new `AltText` field to the `File` DataObject and provides a simple Text field in Assets Admin while editing image to generate alt text using LLM clients which can be configured using yaml file.
 
-![Alt Generator Demo](https://github.com/user-attachments/assets/db0dcf62-0e49-45a7-9a16-a9b897892110)
+https://github.com/user-attachments/assets/db0dcf62-0e49-45a7-9a16-a9b897892110
 
 Requirements
 ------------
