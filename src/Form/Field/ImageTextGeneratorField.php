@@ -2,8 +2,10 @@
 
 namespace KhalsaJio\AltGenerator\Form\Field;
 
-use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\Tip;
 use SilverStripe\Assets\Image;
+use KhalsaJio\AI\Nexus\LLMClient;
+use SilverStripe\Forms\TextField;
 
 class ImageTextGeneratorField extends TextField
 {
@@ -12,18 +14,27 @@ class ImageTextGeneratorField extends TextField
     public function __construct($name, $title = null, $value = null)
     {
         parent::__construct($name, $title, $value);
+
         $this->addExtraClass('image-alt-generator');
+
+        if (LLMClient::default_client()) {
+            $this->setTitleTip(new Tip(_t(
+                __CLASS__ . '.TITLE_DESCRIPTION',
+                'Click below icon to automatically generate descriptive alt text for this image using AI.'
+            )));
+        }
     }
 
     public function getSchemaDataDefaults()
     {
         $data = parent::getSchemaDataDefaults();
 
-        if ($image = Image::get()->byID($this->getImageID())) {
-            $data['imageID'] = $image->ID;
-        }
+        $image = Image::get()->byID($this->getImageID());
 
-        $data['icon'] = 'p-news-item';
+        if ($image && LLMClient::default_client()) {
+            $data['imageID'] = $image->ID;
+            $data['icon'] = 'edit';
+        }
 
         return $data;
     }

@@ -49,7 +49,7 @@ SilverStripe\Core\Injector\Injector:
 Custom Client
 -------------
 
-For those planning to use a different provider or who have their own client, you can create a your own custom LLM client by extending the `KhalsaJio\AI\Nexus\Provider\AbstractLLClient` class. This gives you the freedom to implement your own alt text generation logic.
+For those planning to use a different provider or who have their own client, you can create a your own custom LLM client by extending the `KhalsaJio\AI\Nexus\Provider\AbstractLLClient` class and adding `KhalsaJio\AltGenerator\Client\AltGeneratorTrait` trait. This gives you the freedom to implement your own alt text generation logic.
 
 ```php
 

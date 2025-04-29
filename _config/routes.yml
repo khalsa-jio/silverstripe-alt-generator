@@ -1,7 +1,0 @@
----
-Name: alt-generator
----
-
-SilverStripe\Control\Director:
-  rules:
-    'admin/alt-generator//$Action/$ID': 'KhalsaJio\AltGenerator\Control\AltGeneratorController'
