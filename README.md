@@ -11,7 +11,7 @@ Requirements
 * Silverstripe framework ^5
 * Silverstripe admin ^2
 * Silverstripe asset-admin ^2
-* KhalsaJio SilverStripe AI Nexus ^1.0
+* KhalsaJio SilverStripe AI Nexus ^0.1
 
 Installation
 ------------
