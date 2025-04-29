@@ -11,7 +11,8 @@ trait AltGeneratorTrait
     /**
      * @var string Prompt template with placeholder
      */
-    protected string $promptTemplate = "Generate concise, descriptive alt text for this image in under %d characters. Focus on key visual elements and context.";
+    protected string $promptTemplate = "Generate concise, descriptive alt text for this image"
+        . " in under %d characters. Focus on key visual elements and context.";
 
     /**
      * Initialize alt generator settings

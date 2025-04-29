@@ -24,23 +24,23 @@ class OpenAI extends OpenAIProvider
      */
     public function generateAltText($base_64_image)
     {
-            $data = [
-                'input' => [
-                    [
-                        'role' => 'user',
-                        'content' => [
-                            [
-                                'type' => 'input_text',
-                                'text' => $this->getPrompt(),
-                            ],
-                            [
-                                'type' => 'input_image',
-                                'image_url' => "data:image/jpeg;base64,{$base_64_image}",
-                            ]
+        $data = [
+            'input' => [
+                [
+                    'role' => 'user',
+                    'content' => [
+                        [
+                            'type' => 'input_text',
+                            'text' => $this->getPrompt(),
+                        ],
+                        [
+                            'type' => 'input_image',
+                            'image_url' => "data:image/jpeg;base64,{$base_64_image}",
                         ]
                     ]
-                ],
-            ];
+                ]
+            ],
+        ];
 
         return $this->chat($data, 'responses');
     }
