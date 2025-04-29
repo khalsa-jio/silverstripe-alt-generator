@@ -54,7 +54,7 @@ const ImageTextGeneratorField = (props) => {
     if (!targetText) return;
 
     let index = 0;
-    const speed = 30;
+    const speed = 20;
 
     const textType = () => {
       if (index < targetText.length) {
@@ -108,13 +108,14 @@ const ImageTextGeneratorField = (props) => {
       );
       const data = await response.json();
 
-      if (data.altText) {
-        setTargetText(data.altText);
+      if (data.content) {
+        setTargetText(data.content);
       }
     } catch (error) {
       console.error('Generation failed:', error); // eslint-disable-line no-console
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const buttonClasses = [
@@ -135,16 +136,20 @@ const ImageTextGeneratorField = (props) => {
       <FieldGroup {...fieldGroupProps}>
         <InputGroup>
           <Input {...getInputProps()} />
-          <InputGroupAddon addonType="append">
-            <Button
-              onClick={handleGenerate}
-              disabled={loading || disabled}
-              loading={loading}
-              noText
-              className={classNames(buttonClasses)}
-              icon={icon}
-            />
-          </InputGroupAddon>
+          {
+            (!readOnly && icon) && (
+              <InputGroupAddon addonType="append">
+                <Button
+                  onClick={handleGenerate}
+                  disabled={loading || disabled}
+                  loading={loading}
+                  noText
+                  className={classNames(buttonClasses)}
+                  icon={icon}
+                />
+              </InputGroupAddon>
+            )
+          }
         </InputGroup>
       </FieldGroup>
     </>

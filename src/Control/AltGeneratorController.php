@@ -2,8 +2,8 @@
 
 namespace KhalsaJio\AltGenerator\Control;
 
-use KhalsaJio\AltGenerator\LLMClient;
 use SilverStripe\Assets\Image;
+use KhalsaJio\AI\Nexus\LLMClient;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 
