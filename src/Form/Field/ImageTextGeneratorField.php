@@ -17,7 +17,7 @@ class ImageTextGeneratorField extends TextField
 
         $this->addExtraClass('image-alt-generator');
 
-        if (LLMClient::default_client()) {
+        if (LLMClient::getDefaultClient()) {
             $this->setTitleTip(new Tip(_t(
                 __CLASS__ . '.TITLE_DESCRIPTION',
                 'Click below icon to automatically generate descriptive alt text for this image using AI.'
@@ -31,7 +31,7 @@ class ImageTextGeneratorField extends TextField
 
         $image = Image::get()->byID($this->getImageID());
 
-        if ($image && LLMClient::default_client()) {
+        if ($image && LLMClient::getDefaultClient()) {
             $data['imageID'] = $image->ID;
             $data['icon'] = 'edit';
         }
